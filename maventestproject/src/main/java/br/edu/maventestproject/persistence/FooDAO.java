@@ -1,7 +1,5 @@
 package br.edu.maventestproject.persistence;
 
-import br.edu.maventestproject.service.FooService;
-
-public class FooDAO {
+public class FooDAO implements DAO{
     
 }
