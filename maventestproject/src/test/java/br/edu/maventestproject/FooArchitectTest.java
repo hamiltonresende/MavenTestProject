@@ -8,6 +8,7 @@ import org.junit.Test;
 
 // A classe estatica classes deve ser importada manualmente
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 
 public class FooArchitectTest {
     // Define os pacotes sujeitos a realizacao dos testes
@@ -24,6 +25,17 @@ public class FooArchitectTest {
         .should().onlyHaveDependentClassesThat().resideInAnyPackage("..persistence..", "..service..");
 
         // Faz o check nas classes selecionadas do projeto de acordo com a regra criada
+        rule.check(importedClasses);
+    }
+
+    @Test
+    public void verificarDependenciaDaCamadaPersistencia(){
+
+        /* Nenhuma classe que esteja no pacote de persistencia pode depender
+           de outra classe que esteja no pacote de servicos */
+           ArchRule rule = noClasses().that().resideInAPackage("..persistence..")
+           .should().dependOnClassesThat().resideInAnyPackage("..service..");
+
         rule.check(importedClasses);
     }
 
