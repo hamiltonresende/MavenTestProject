@@ -6,6 +6,8 @@ import com.tngtech.archunit.lang.ArchRule;
 
 import org.junit.Test;
 
+import br.edu.maventestproject.persistence.DAO;
+
 // A classe estatica classes deve ser importada manualmente
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
@@ -45,6 +47,16 @@ public class FooArchitectTest {
         /* Classes que tem o nome terminando com DAO devem residir no pacote de persistencia */
         ArchRule rule = classes().that().haveSimpleNameEndingWith("DAO")
         .should().resideInAPackage("..persistence..");
+
+        rule.check(importedClasses);
+    }
+
+    @Test
+    public void verificarImplementacaoInterfaceDAO(){
+
+        /* Classes que implementam a interface DAO devem ter o nome terminando em DAO */
+        ArchRule rule = classes().that().implement(DAO.class)
+        .should().haveSimpleNameEndingWith("DAO");
 
         rule.check(importedClasses);
     }
