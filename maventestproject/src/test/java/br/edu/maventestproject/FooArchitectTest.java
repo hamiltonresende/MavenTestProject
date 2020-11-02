@@ -8,9 +8,10 @@ import org.junit.Test;
 
 import br.edu.maventestproject.persistence.DAO;
 
-// A classe estatica classes deve ser importada manualmente
+// As classes estaticas devem ser importadas manualmente
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
+import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
 
 public class FooArchitectTest {
     // Define os pacotes sujeitos a realizacao dos testes
@@ -57,6 +58,15 @@ public class FooArchitectTest {
         /* Classes que implementam a interface DAO devem ter o nome terminando em DAO */
         ArchRule rule = classes().that().implement(DAO.class)
         .should().haveSimpleNameEndingWith("DAO");
+
+        rule.check(importedClasses);
+    }
+
+    @Test
+    public void verificarDependenciasCiclicas(){
+
+        /* Qualquer classe dentro dessas fatias devem ser livres de dependencias ciclicas */
+        ArchRule rule = slices().matching("br.edu.maventestproject.(*)..").should().beFreeOfCycles();
 
         rule.check(importedClasses);
     }
