@@ -39,4 +39,14 @@ public class FooArchitectTest {
         rule.check(importedClasses);
     }
 
+    @Test
+    public void verificarNomesClassesCamadasPersistencia(){
+
+        /* Classes que tem o nome terminando com DAO devem residir no pacote de persistencia */
+        ArchRule rule = classes().that().haveSimpleNameEndingWith("DAO")
+        .should().resideInAPackage("..persistence..");
+
+        rule.check(importedClasses);
+    }
+
 }
