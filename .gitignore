@@ -1,0 +1,4 @@
+/maventestproject/target/classes/br/edu/maventestproject/business/*.class
+/maventestproject/target/classes/br/edu/maventestproject/persistence/*.class
+/maventestproject/target/classes/br/edu/maventestproject/service/*.class
+/maventestproject/target/test-classes/br/edu/maventestproject/*.class
