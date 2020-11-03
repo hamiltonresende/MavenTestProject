@@ -12,6 +12,7 @@ import br.edu.maventestproject.persistence.DAO;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.dependencies.SlicesRuleDefinition.slices;
+import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
 public class FooArchitectTest {
     // Define os pacotes sujeitos a realizacao dos testes
@@ -67,6 +68,18 @@ public class FooArchitectTest {
 
         /* Qualquer classe dentro dessas fatias devem ser livres de dependencias ciclicas */
         ArchRule rule = slices().matching("br.edu.maventestproject.(*)..").should().beFreeOfCycles();
+
+        rule.check(importedClasses);
+    }
+
+    
+    @Test
+    public void verificarViolacaoCamadas(){
+
+        /* A camada de persistencia so pode ser acessada pela camada de servico */
+        ArchRule rule = layeredArchitecture().layer("Service").definedBy("..service..")
+        .layer("Persistence").definedBy("..persistence..")
+        .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Service");
 
         rule.check(importedClasses);
     }
